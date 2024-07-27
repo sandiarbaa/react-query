@@ -1,8 +1,8 @@
 "use client";
 import Image from "next/image";
-import { useProducts } from "./features/product/useProducts";
+import { useProducts } from "../features/product/useProducts";
 
-export default function Home() {
+export default function ProductsPage() {
   const { data: products, isLoading } = useProducts();
 
   const renderProducts = () => {
@@ -44,7 +44,7 @@ export default function Home() {
 
   return (
     <main className="p-5">
-      <h1 className="font-bold text-2xl mb-3">Home Page</h1>
+      <h1 className="font-bold text-2xl mb-3">Product Page</h1>
       <table className="table-auto">
         <thead>
           <tr className="border-[1.5px] bg-gray-500 text-white">
