@@ -5,12 +5,17 @@ import Image from "next/image";
 
 export default function Home() {
   const [products, setProducts] = useState<[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // Function untuk fetch products
   const fetchProducts = async () => {
+    setIsLoading(true);
     try {
-      const productsResponse = await axiosInstance.get("/products?limit=5");
-      setProducts(productsResponse.data);
+      setTimeout(async () => {
+        const productsResponse = await axiosInstance.get("/products?limit=5");
+        setProducts(productsResponse.data);
+        setIsLoading(false);
+      }, 1500);
     } catch (error) {
       console.log(error);
     }
@@ -65,7 +70,7 @@ export default function Home() {
       <table className="table-auto">
         <thead>
           <tr className="border-[1.5px] bg-gray-500 text-white">
-            <th className="border-[1.5px] w-[40px]">No.</th>
+            <th className="border-[1.5px] w-[80px]">No.</th>
             <th className="border-[1.5px] w-[150px]">Title</th>
             <th className="border-[1.5px] w-[100px]">Price</th>
             <th className="border-[1.5px] w-[100px]">Category</th>
@@ -73,7 +78,14 @@ export default function Home() {
             <th className="border-[1.5px] w-[100px]">Image</th>
           </tr>
         </thead>
-        <tbody>{renderProducts()}</tbody>
+        <tbody>
+          {renderProducts()}
+          {isLoading ? (
+            <tr>
+              <td>Loading...</td>
+            </tr>
+          ) : null}
+        </tbody>
       </table>
     </main>
   );
