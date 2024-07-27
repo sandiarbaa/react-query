@@ -1,9 +1,35 @@
 "use client";
 import Image from "next/image";
 import { useProducts } from "./features/product/useProducts";
+import { useEffect, useState } from "react";
+import { axiosInstance } from "./lib/axios";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
 export default function Home() {
-  const { data: products, isLoading } = useProducts();
+  // const { data: products, isLoading } = useProducts();
+
+  // const productsQuery = useQuery({
+  const { data, isLoading } = useQuery({
+    queryFn: async () => {
+      const productsResponse = await axiosInstance.get("/products?limit=5");
+
+      // const productsResponse = await axios.get(
+      //   "http://localhost:3000/api/products"
+      // );
+      // console.log("axios request");
+
+      return productsResponse;
+    },
+    refetchOnWindowFocus: false,
+    queryKey: ["products"],
+  });
+
+  // console.log(data);
+  // console.log(isLoading);
+
+  // console menggunakan customHooks useProducts
+  // console.log(products.data);
 
   const renderProducts = () => {
     interface ProductProps {
@@ -15,7 +41,10 @@ export default function Home() {
       image: string;
     }
 
-    return products.map((product: ProductProps) => {
+    // render menggunakan customHooks useProducts
+    // return products.data?.map((product: ProductProps) => {
+
+    return data?.data.map((product: ProductProps) => {
       return (
         <tr key={product.id} className="border text-center">
           <td className="border-[1.5px] p-2">{product.id}</td>
