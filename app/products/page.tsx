@@ -1,9 +1,9 @@
 "use client";
 import Image from "next/image";
-import { useProducts } from "../features/product/useProducts";
+import { useFetchProducts } from "../features/product/useFetchProducts";
 
 export default function ProductsPage() {
-  const { data: products, isLoading } = useProducts();
+  const { data, isLoading } = useFetchProducts();
 
   const renderProducts = () => {
     interface ProductProps {
@@ -15,7 +15,7 @@ export default function ProductsPage() {
       image: string;
     }
 
-    return products.map((product: ProductProps) => {
+    return data?.data.map((product: ProductProps) => {
       return (
         <tr key={product.id} className="border text-center">
           <td className="border-[1.5px] p-2">{product.id}</td>
